@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main()
+{
+    int minimo, maximo;
+    int maxIntentos;
+    int intentos[10][3] = {0};
+    int cantidadIntentos = 0;
+    int adivinado = 0;
+    int numeroSecreto;
+    int numero;
+
+    printf("=========================================\n");
+    printf("      JUEGO: ADIVINA UN NUMERO\n");
+    printf("=========================================\n\n");
+
+    // RF01: Configuracion dinamica del rango. El programa debe permitir que el usuario defina el rango minimo y maximo del numero secreto.
+
+    do
+    {
+        printf("Ingrese el limite minimo: ");
+        scanf("%d", &minimo);
+
+        printf("Ingrese el limite maximo: ");
+        scanf("%d", &maximo);
+
+        if(minimo >= maximo)
+        {
+            printf("\nERROR: El limite minimo debe ser menor que el maximo.\n\n");
+        }
+
+    } while(minimo >= maximo);
+
+    // RF02: Configuracion dinamica de intentos. El programa debe permitir que el usuario seleccione el numero maximo de intentos (hasta 10).
+
+    do
+    {
+        printf("Ingrese el numero maximo de intentos (1-10): ");
+        scanf("%d", &maxIntentos);
+
+        if(maxIntentos < 1 || maxIntentos > 10)
+        {
+            printf("\nERROR: Debe ingresar un valor entre 1 y 10.\n\n");
+        }
+
+    } while(maxIntentos < 1 || maxIntentos > 10);
+
+    // RF03: Validacion del rango y duplicados. El programa debe validar que cada intento este dentro del rango y no se repita.
+
+    srand(time(NULL));
+    numeroSecreto = rand() % (maximo - minimo + 1) + minimo;
+
+    printf("\n¡Comienza el juego!\n");
+
+    // RF04: Registro de intentos en matriz: El programa debe almacenar en una matriz el numero de intento, el valor ingresado y el resultado (0 bajo, 1 alto, 2 correcto).
+
+    while(cantidadIntentos < maxIntentos && adivinado == 0)
+    {
+        printf("\nIntento #%d\n", cantidadIntentos + 1);
+        printf("Ingrese un numero: ");
+        scanf("%d", &numero);
+
+        intentos[cantidadIntentos][0] = cantidadIntentos + 1;
+        intentos[cantidadIntentos][1] = numero;
+
+        if(numero == numeroSecreto)
+        {
+            printf("\n¡Correcto!\n")
+            intentos[cantidadIntentos][2] = 0;
+            adivinado= 1 }
