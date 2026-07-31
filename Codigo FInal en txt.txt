@@ -1,0 +1,183 @@
+                        Universidad de las fuerzas armadas “ESPE” Nombres y Apellidos: Christian Mateo Padilla Vaca
+Fecha: lunes, 27 de julio de 2026 NRC. 28561
+Asignatura: Fundamentos de la programación Ingeniera: Jenny Ruiz
+Código Final
+#include <stdio.h> #include <stdlib.h>
+//---------------- VARIABLES GLOBALES	//
+int tiempoVerde = 8; int tiempoAmarillo = 3; int tiempoRojo = 6;
+
+//--------------- FUNCION DE ESPERA	//
+
+void esperar()
+{
+for (volatile long i = 0; i < 250000000; i++)
+{
+}
+}
+
+//------------- REGISTRAR EN ARCHIVO TXT	//
+void registrar(char mensaje[])
+{
+FILE *archivo;
+archivo = fopen("registro.txt", "a"); if (archivo != NULL)
+{
+fprintf(archivo, "%s\n", mensaje); fclose(archivo);
+}
+}
+
+//	MOSTRAR MENU	//
+void menu()
+{
+printf("\n=========================================\n"); printf("	SEMAFORO DIGITAL INTELIGENTE\n"); printf("=========================================\n");
+printf("1. Modo normal\n"); printf("2. Hora pico\n"); printf("3. Solicitud peatonal\n");
+
+printf("4. Prioridad ciclista\n"); printf("5. Emergencia\n"); printf("6. Configurar tiempos\n"); printf("7. Salir\n");
+printf("=========================================\n");
+printf("Seleccione una opcion: ");
+}
+//	MODO NORMAL	//
+
+void modoNormal()
+{
+printf("\n--- MODO NORMAL ---\n");
+printf("Semaforo VERDE (%d segundos)\n", tiempoVerde); registrar("Semaforo VERDE");
+esperar();
+
+printf("Semaforo AMARILLO (%d segundos)\n", tiempoAmarillo); registrar("Semaforo AMARILLO");
+esperar();
+
+printf("Semaforo ROJO (%d segundos)\n", tiempoRojo); registrar("Semaforo ROJO");
+esperar();
+printf("Fin del ciclo.\n");
+}
+//	HORA PICO
+void horaPico()
+{
+int vehiculos;
+printf("\nIngrese la cantidad de vehiculos: "); scanf("%d", &vehiculos);
+printf("\nHora pico activada.\n"); if (vehiculos >= 20)
+{
+printf("Mucho trafico.\n");
+printf("El tiempo en VERDE aumenta.\n");
+printf("VERDE (%d segundos)\n", tiempoVerde + 5); registrar("Hora pico: Verde extendido");
+esperar();
+}
+else
+{
+printf("Trafico normal.\n");
+printf("VERDE (%d segundos)\n", tiempoVerde); registrar("Hora pico: Trafico normal"); esperar();
+}
+
+printf("AMARILLO (%d segundos)\n", tiempoAmarillo); registrar("Amarillo");
+esperar();
+printf("ROJO (%d segundos)\n", tiempoRojo); registrar("Rojo");
+esperar();
+}
+//--------------- SOLICITUD PEATONAL	//
+
+void solicitudPeatonal()
+{
+int boton;
+printf("\n¿El peaton presiono el boton?\n"); printf("1. Si\n");
+printf("2. No\n"); printf("Seleccione: "); scanf("%d", &boton);
+if (boton == 1)
+{
+printf("\nSolicitud recibida.\n");
+printf("Semaforo VERDE finalizando...\n"); esperar();
+
+printf("Semaforo AMARILLO\n"); registrar("Solicitud peatonal: Amarillo"); esperar();
+
+printf("Semaforo ROJO para vehiculos\n"); registrar("Solicitud peatonal: Rojo"); esperar();
+
+printf("PEATONES PUEDEN CRUZAR\n");
+registrar("Paso peatonal habilitado"); esperar();
+}
+else
+{
+printf("\nNo existe solicitud peatonal.\n"); registrar("No hubo solicitud peatonal");
+}
+}
+//--------------- PRIORIDAD CICLISTA	//
+void prioridadCiclista()
+{
+int ciclistas;
+printf("\nIngrese la cantidad de ciclistas: "); scanf("%d", &ciclistas);
+if (ciclistas >= 5)
+{
+
+printf("\nAlta presencia de ciclistas.\n"); printf("Se aumenta el tiempo de cruce.\n");
+registrar("Prioridad para ciclistas");
+printf("ROJO para vehiculos\n"); esperar();
+printf("CICLISTAS PUEDEN CRUZAR\n");
+esperar();
+}
+else
+{
+printf("\nCantidad normal de ciclistas.\n");
+
+registrar("Cruce normal de ciclistas");
+printf("ROJO para vehiculos\n"); esperar();
+
+printf("Paso para ciclistas.\n"); esperar();
+}
+}
+
+//----------------- MODO EMERGENCIA	//
+void emergencia()
+{
+printf("\n*** EMERGENCIA ***\n"); registrar("Modo emergencia activado");
+printf("Todos los semaforos en ROJO.\n"); esperar();
+
+printf("Paso exclusivo para la ambulancia.\n"); esperar();
+printf("Emergencia finalizada.\n");
+}
+//------------ CONFIGURAR TIEMPOS	//
+
+void configurarTiempos()
+{
+printf("\nCONFIGURACION DE TIEMPOS\n");
+
+printf("Ingrese el tiempo del semaforo VERDE: "); scanf("%d", &tiempoVerde);
+printf("Ingrese el tiempo del semaforo AMARILLO: "); scanf("%d", &tiempoAmarillo);
+printf("Ingrese el tiempo del semaforo ROJO: "); scanf("%d", &tiempoRojo);
+
+registrar("Tiempos del semaforo modificados");
+
+printf("\nConfiguracion guardada correctamente.\n");
+}
+//	MAIN
+int main()
+{
+int opcion;
+
+printf("=========================================\n"); printf(" SIMULADOR DE SEMAFORO DIGITAL\n"); printf("=========================================\n");
+do
+{
+menu();
+scanf("%d", &opcion); switch(opcion)
+{
+case 1:
+modoNormal(); break;
+case 2:
+horaPico(); break;
+
+case 3:
+solicitudPeatonal(); break;
+case 4:
+prioridadCiclista(); break;
+case 5:
+emergencia(); break;
+
+case 6:
+configurarTiempos(); break;
+case 7:
+printf("\nGracias por utilizar el simulador.\n"); registrar("Programa finalizado");
+break;
+
+default:
+printf("\nOpcion no valida.\n");
+}
+} while(opcion != 7);
+
+return 0;
+}
